@@ -1,6 +1,7 @@
 import pygame
 import os #helps defining path for images in case it uses different operating systems
 from character import Character
+from player import Player
 
 #window
 WIDTH, HEIGHT = 900, 500
@@ -17,7 +18,7 @@ ENEMY_WIDTH, ENEMY_HEIGHT = 17*2, 25*2
 ENEMY_IMAGE = pygame.image.load(os.path.join('Assets', 'enemySprite1.png'))
 ENEMY = pygame.transform.scale(ENEMY_IMAGE, (ENEMY_WIDTH, ENEMY_HEIGHT))
 
-player = Character([100.0, 100.0], [0.01, 0.01])
+player = Player([100.0, 100.0], [0.01, 0.01])
 
 #main program
 def main():
