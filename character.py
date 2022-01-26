@@ -11,6 +11,7 @@ class Character(Sprite):
         self.momentum[1] += 0.05 #momentum y, gravity
         self.position[0] += self.momentum[0] #position x and momentum x
         self.position[1] += self.momentum[1]
+        #rect is where the sprite position is defined in x and y
         self.rect.x = self.position[0]
         self.rect.y = self.position[1]
         
