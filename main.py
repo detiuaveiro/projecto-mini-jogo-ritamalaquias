@@ -1,5 +1,6 @@
 import pygame
-import os #helps defining path for images in case it uses different operating systems
+import os
+from character import Character #helps defining path for images in case it uses different operating systems
 #from character import Character
 from player import Player
 from tile import Tile
@@ -23,6 +24,7 @@ ENEMY_IMAGE = pygame.image.load(os.path.join('Assets', 'enemySprite1.png'))
 ENEMY = pygame.transform.scale(ENEMY_IMAGE, (ENEMY_WIDTH, ENEMY_HEIGHT))
 
 player = Player([100.0, 100.0], [0.01, 0.01])
+
 tile = Tile([10.0, 10.0])
 
 
@@ -67,6 +69,8 @@ def main():
         #player.y += 1
         
         player.player_controls()
+        player.add_gravity()
+        player.apply_window_collision(HEIGHT)
         player.apply_momentum()
         draw_window(player, enemy, tile)
 

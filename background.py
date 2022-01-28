@@ -21,8 +21,7 @@ class Background(Sprite):
                 #could use a match-case statement, but it's only available in py 3.10+
                 if background_tile == 0:
                     tile_sprite = Surface((TILE_SIZE, TILE_SIZE))
-                    tile_sprite.fill((0,0,0))
-
+                    tile_sprite.fill((0,0,0)) #black
                 if background_tile == 1:
                     tile_sprite = transform.scale(big_yellow_star, (TILE_SIZE, TILE_SIZE))
                 if background_tile == 2:
