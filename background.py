@@ -31,11 +31,13 @@ class Background(Sprite):
                 if background_tile == 4:
                     tile_sprite = transform.scale(small_yellow_star, (TILE_SIZE, TILE_SIZE))
                 if background_tile == 5: 
-                    tile_sprite = transform.scale(blue_star, (TILE_SIZE, TILE_SIZE)) 
+                    tile_sprite = transform.scale(blue_star, (TILE_SIZE, TILE_SIZE))
                                    
                 self.build_tile(tile_sprite, column_count, row_count)
                 column_count +=1
             row_count+=1
+        
+        
 
     def build_tile(self, tile_sprite, column, row_count):
         rect = tile_sprite.get_rect()
@@ -43,5 +45,3 @@ class Background(Sprite):
         rect.y = row_count * TILE_SIZE
         background_tile = (tile_sprite, rect)
         self.tile_list.append(background_tile)
-
-

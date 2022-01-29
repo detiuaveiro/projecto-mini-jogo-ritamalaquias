@@ -1,13 +1,15 @@
 from pygame import *
 from pygame.sprite import Sprite
-import os
+import os #helps defining path for images in case it uses different operating systems
 class Character(Sprite):
     def __init__(self, character_image, width, height, position = [0.0, 0.0], momentum = [0.0, 0.0]):      
         self.position = position
         self.momentum = momentum
         self.character_image = image.load(os.path.join('Assets', character_image)) 
         self.image = transform.scale(self.character_image, (width, height))
-        self.rect = self.image.get_rect() 
+        self.rect = self.image.get_rect()
+
+        self.apply_momentum() #to apply initial position so that we can use the x and y rectcoordinates
         
     def apply_momentum(self):
         self.position[0] += self.momentum[0] #position x and momentum x

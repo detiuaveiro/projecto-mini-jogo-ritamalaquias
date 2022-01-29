@@ -9,5 +9,9 @@ class Tile(Sprite):
         tile_image =  image.load(os.path.join('Assets', 'tileSprite1.png'))
         self.image = transform.scale(tile_image, (TILE_WIDTH, TILE_HEIGHT)) 
         self.position = position
-        #self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
+        self.rect.x = self.position[0]
+        self.rect.y = self.position[1]
+        
+
 
