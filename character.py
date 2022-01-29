@@ -3,6 +3,7 @@ from pygame.sprite import Sprite
 import os #helps defining path for images in case it uses different operating systems
 
 BOUNCE_INTENSITY = -0.5
+
 class Character(Sprite):
     def __init__(self, character_image, width, height, position = [0.0, 0.0], momentum = [0.0, 0.0]):      
         self.position = position
@@ -17,8 +18,11 @@ class Character(Sprite):
         self.position[0] += self.momentum[0] #position x and momentum x
         self.position[1] += self.momentum[1]
         #rect is where the sprite position is defined in x and y
+
         self.rect.x = self.position[0]
         self.rect.y = self.position[1]
+
+                
 
     def bounce_horizontal(self):
         self.momentum[0] *= BOUNCE_INTENSITY

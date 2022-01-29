@@ -5,6 +5,7 @@ from layer import Layer
 class Level():
     def __init__(self):
         self.layer_list = []
+        self.enemy_list = []
 
     def get_all_tiles(self):
         all_tiles = []
@@ -18,7 +19,6 @@ class Level():
             if layer.collidable:
                 collidable_tiles += layer.tile_list
         return collidable_tiles
-
 
 
     

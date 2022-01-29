@@ -1,14 +1,10 @@
-from platform import platform
 import pygame
 from pygame import *
 from pygame.locals import *
 from player import Player
 from enemy import Enemy
-from tile import Tile
-from background import Background
 from level import Level
 from layer import Layer
-from pygame.sprite import Sprite
 
 #window
 WIDTH, HEIGHT = 900, 500
@@ -84,12 +80,15 @@ background = Layer(grid_background, background_img_dict)
 platforms = Layer(grid_platform, platform_img_dict, True)
 level = Level()
 
+
 #main program
 def main():  
     clock = pygame.time.Clock()
 
     level.layer_list.append(background)
     level.layer_list.append(platforms)
+    level.enemy_list.append(Enemy([500.0, 100.0]))#([Enemy([500.0, 100.0]), Enemy([100.0, 100.0])])
+    level.enemy_list.append(Enemy([100.0, 100.0]))
     #game loop
     run = True
     while run:
@@ -101,7 +100,6 @@ def main():
         player.add_gravity()
         enemy.add_gravity()
         
-
         for tile in level.get_collidable_tiles():
             collide = tile[1].colliderect(player.rect)
             if collide:
@@ -110,9 +108,7 @@ def main():
                 player.bounce_vertical()
                 # player.position[1] -= 1
 
-
         player.player_controls()
-
         player.apply_window_collision(HEIGHT, WIDTH)
         enemy.apply_window_collision(HEIGHT, WIDTH)
         player.apply_momentum()
@@ -128,7 +124,9 @@ def draw_window(player, enemy):
     for tile in level.get_all_tiles():
         WIN.blit(tile[0], tile[1]) #0 = tile_sprite, 1 = rect
     WIN.blit(player.image, (player.position[0], player.position[1])) #when you want to draw a surface onto a screen
-    WIN.blit(enemy.image, (enemy.position[0], enemy.position[1]))
+    for enemy in level.enemy_list:
+        WIN.blit(enemy.image, (enemy.position[0], enemy.position[1]))
+    
     #WIN.blit(test_tile.image, (test_tile.position[0], test_tile.position[1]))
     pygame.display.update() #refreshes the screen
 
