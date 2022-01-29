@@ -3,6 +3,7 @@ import os
 from character import Character #helps defining path for images in case it uses different operating systems
 #from character import Character
 from player import Player
+from enemy import Enemy
 from tile import Tile
 from background import Background
 #window
@@ -13,17 +14,13 @@ pygame.display.set_caption("Balloon Fight") #window name
 BLACK = (0, 0, 0) 
 FPS = 60
 
-
-ENEMY_WIDTH, ENEMY_HEIGHT = 17*2, 25*2
-
 #for stars in background
 # TO DO: stars_img = pygame.image.load()
 #make a class for platform, load image and define where tiles should go
 
-ENEMY_IMAGE = pygame.image.load(os.path.join('Assets', 'enemySprite1.png'))
-ENEMY = pygame.transform.scale(ENEMY_IMAGE, (ENEMY_WIDTH, ENEMY_HEIGHT))
-
 player = Player([100.0, 100.0], [0.01, 0.01])
+enemy = Enemy([500.0, 100.0], [0.01, 0.01])
+
 
 tile = Tile([10.0, 10.0])
 
@@ -56,7 +53,7 @@ background = Background(grid)
 
 #main program
 def main():
-    enemy = pygame.Rect(700, 200, ENEMY_WIDTH, ENEMY_HEIGHT)
+    #enemy = pygame.Rect(700, 200, ENEMY_WIDTH, ENEMY_HEIGHT)
     
     clock = pygame.time.Clock()
     #game loop
@@ -70,8 +67,11 @@ def main():
         
         player.player_controls()
         player.add_gravity()
+        enemy.add_gravity()
         player.apply_window_collision(HEIGHT)
+        enemy.apply_window_collision(HEIGHT)
         player.apply_momentum()
+        enemy.apply_momentum()
         draw_window(player, enemy, tile)
 
     pygame.quit()
@@ -82,7 +82,7 @@ def draw_window(player, enemy, tile):
     for background_tile in background.tile_list:
         WIN.blit(background_tile[0], background_tile[1]) #0 = tile_sprite, 1 = rect
     WIN.blit(player.image, (player.position[0], player.position[1])) #when you want to draw a surface onto a screen
-    WIN.blit(ENEMY, (enemy.x, enemy.y))
+    WIN.blit(enemy.image, (enemy.position[0], enemy.position[1]))
     WIN.blit(tile.image, (tile.position[0], tile.position[1]))
     pygame.display.update() #refreshes the screen
 

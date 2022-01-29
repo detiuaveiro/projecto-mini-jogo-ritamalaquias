@@ -4,7 +4,6 @@ from character import Character
 PLAYER_WIDTH, PLAYER_HEIGHT = 19*2, 27*2 #image size with 200% scale
 class Player(Character):
     def __init__(self, position = [0.0, 0.0], momentum = [0.0, 0.0]):
-        #TO DO meter imagem no character e passar aqui como argumento
         super().__init__('playerSprite1.png', PLAYER_WIDTH, PLAYER_HEIGHT, position, momentum) #from Character class
 
     def player_controls(self):

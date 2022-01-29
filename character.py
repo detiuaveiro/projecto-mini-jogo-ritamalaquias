@@ -27,4 +27,4 @@ class Character(Sprite):
         #collision window top
         if self.rect.top < 0 and self.momentum[1] < 0.0:
             self.rect.top = height
-            self.momentum[1] = 0.0  
+            self.momentum[1] = 0.0
