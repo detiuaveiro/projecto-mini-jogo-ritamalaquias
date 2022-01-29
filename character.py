@@ -19,8 +19,8 @@ class Character(Sprite):
     def add_gravity(self):
         self.momentum[1] += 0.05 #momentum y, gravity
     
-    def apply_window_collision(self, height):
-        #colli sion window bottom
+    def apply_window_collision(self, height, width):
+        #collision window bottom
         if self.rect.bottom > height and self.momentum[1] > 0.0:
             self.rect.bottom = height
             self.momentum[1] = 0.0  
@@ -28,3 +28,15 @@ class Character(Sprite):
         if self.rect.top < 0 and self.momentum[1] < 0.0:
             self.rect.top = height
             self.momentum[1] = 0.0
+
+        #to left
+        if self.rect.left > width and self.position[0] > width:
+            self.rect.left = 0.0
+            self.position[0] = 0.0
+
+        #to right
+        if self.rect.right < 0 and self.position[0] < 0.0:
+            self.rect.right = 0.0
+            self.position[0] = width
+
+    
