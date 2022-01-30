@@ -9,10 +9,10 @@ class Player(Character):
 
     def player_controls(self):
         keys_pressed = key.get_pressed()
-        #limits maximum momentum so that the player won't get super sonic
-        if keys_pressed[K_LEFT] and self.momentum[0] > (MAX_MOMENTUM*-1):
+        
+        if keys_pressed[K_LEFT]:
             self.momentum[0] -= 0.1
-        if keys_pressed[K_RIGHT] and self.momentum[0] < MAX_MOMENTUM:
+        if keys_pressed[K_RIGHT]:
             self.momentum[0] += 0.1
-        if keys_pressed[K_SPACE] and self.momentum[1] > (MAX_MOMENTUM*-1):
+        if keys_pressed[K_SPACE]:
             self.momentum[1] -= 0.3
