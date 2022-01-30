@@ -2,7 +2,7 @@ import pygame
 from pygame import *
 from pygame.locals import *
 from player import Player
-from enemy import Enemy
+from enemy import Enemy, EnemyState, EnemyType
 from level import Level
 from layer import Layer
 
@@ -86,8 +86,8 @@ def main():
 
     level.layer_list.append(background)
     level.layer_list.append(platforms)
-    level.enemy_list.append(Enemy([100.0, 200.0]))#([Enemy([500.0, 100.0]), Enemy([100.0, 100.0])])
-    level.enemy_list.append(Enemy([500.0, 100.0]))
+    level.enemy_list.append(Enemy(EnemyType.easy, [100.0, 200.0]))#([Enemy([500.0, 100.0]), Enemy([100.0, 100.0])])
+    level.enemy_list.append(Enemy(EnemyType.normal, [500.0, 100.0]))
     #game loop
     run = True
     while run:
@@ -109,35 +109,41 @@ def main():
 
         player.player_controls()
         player.apply_window_collision(HEIGHT, WIDTH)
-        player.apply_momentum()
-
-        for enemy in level.enemy_list:
-            enemy.add_gravity()
-            enemy.apply_window_collision(HEIGHT, WIDTH)
-            enemy.apply_ai(player)
-            enemy.apply_momentum()
-            
-            
-            if player.rect.colliderect(enemy.rect):
-                enemy.bounce_horizontal()
-                enemy.bounce_vertical()
-                player.bounce_horizontal()
-                player.bounce_vertical()
-
-            for tile in level.get_collidable_tiles():
-                if tile[1].colliderect(enemy.rect):
-                    enemy.rect.bottom = tile[1].top
-                    # player.momentum[1] = 0.0
-                    enemy.bounce_vertical()
-                    # player.position[1] -= 1
-            
-
-        draw_window(player, enemy)
+        player.apply_momentum()       
+        update_enemies()
+        draw_window()
 
     pygame.quit()
-
 #methods
-def draw_window(player, enemy):
+def update_enemies():
+    for enemy in level.enemy_list:
+        enemy.add_gravity()
+        #state machine
+        if enemy.state == EnemyState.chasing:
+            enemy.apply_window_collision(HEIGHT, WIDTH)
+            enemy.apply_ai(player)
+        enemy.apply_momentum()
+        
+        if player.rect.colliderect(enemy.rect) and enemy.state == EnemyState.chasing:
+            if player.rect.bottom < enemy.rect.top+2:
+                enemy.state = EnemyState.dying
+                player.score += Enemy.enemy_type_score_value[enemy.enemy_type]
+            enemy.bounce_horizontal()
+            enemy.bounce_vertical()
+            player.bounce_horizontal()
+            player.bounce_vertical()
+
+        for tile in level.get_collidable_tiles():
+            if tile[1].colliderect(enemy.rect) and enemy.state == EnemyState.chasing:
+                enemy.rect.bottom = tile[1].top
+                # player.momentum[1] = 0.0
+                enemy.bounce_vertical()
+                # player.position[1] -= 1
+        
+        if enemy.rect.top > HEIGHT: #to remove dead enemy after it drops from screen
+            level.enemy_list.remove(enemy)
+
+def draw_window():
     WIN.fill(BLACK)
     for tile in level.get_all_tiles():
         WIN.blit(tile[0], tile[1]) #0 = tile_sprite, 1 = rect

@@ -13,7 +13,7 @@ class Character(Sprite):
         self.image = transform.scale(self.character_image, (width, height))
         self.rect = self.image.get_rect()
 
-        self.apply_momentum() #to apply initial position so that we can use the x and y rectcoordinates
+        self.apply_momentum() #to apply initial position so that we can use the x and y rect coordinates
         
     #limits maximum momentum so that the character won't get super sonic
     def apply_momentum(self):
