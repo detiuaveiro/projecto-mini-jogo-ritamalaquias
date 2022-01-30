@@ -2,7 +2,7 @@ from pygame import *
 from pygame.sprite import Sprite
 import os #helps defining path for images in case it uses different operating systems
 
-BOUNCE_INTENSITY = -0.5
+BOUNCE_INTENSITY = 1.0
 MAX_MOMENTUM = 2.5
 
 class Character(Sprite):
@@ -30,11 +30,12 @@ class Character(Sprite):
         self.rect.x = self.position[0]
         self.rect.y = self.position[1]
 
+    #TO DO: fix bounce
     def bounce_horizontal(self):
-        self.momentum[0] *= BOUNCE_INTENSITY
+        self.momentum[0] *= -BOUNCE_INTENSITY
 
     def bounce_vertical(self):
-        self.momentum[1] *= BOUNCE_INTENSITY
+        self.momentum[1] *= -BOUNCE_INTENSITY
 
     def add_friction(self):
         self.momentum[0] -= 0.03

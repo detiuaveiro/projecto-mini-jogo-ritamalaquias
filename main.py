@@ -57,7 +57,7 @@ grid_platform = [
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
-[1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
+[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
@@ -86,7 +86,7 @@ def main():
 
     level.layer_list.append(background)
     level.layer_list.append(platforms)
-    level.enemy_list.append(Enemy([100.0, 100.0]))#([Enemy([500.0, 100.0]), Enemy([100.0, 100.0])])
+    level.enemy_list.append(Enemy([100.0, 200.0]))#([Enemy([500.0, 100.0]), Enemy([100.0, 100.0])])
     level.enemy_list.append(Enemy([500.0, 100.0]))
     #game loop
     run = True
@@ -104,6 +104,7 @@ def main():
                 player.rect.bottom = tile[1].top
                 # player.momentum[1] = 0.0
                 player.bounce_vertical()
+                player.bounce_horizontal()
                 # player.position[1] -= 1
 
         player.player_controls()
@@ -116,10 +117,15 @@ def main():
             enemy.apply_ai(player)
             enemy.apply_momentum()
             
-            #to fix: momentum being shared between two enemies
+            
+            if player.rect.colliderect(enemy.rect):
+                enemy.bounce_horizontal()
+                enemy.bounce_vertical()
+                player.bounce_horizontal()
+                player.bounce_vertical()
+
             for tile in level.get_collidable_tiles():
-                collide_enemy = tile[1].colliderect(enemy.rect)
-                if collide_enemy:
+                if tile[1].colliderect(enemy.rect):
                     enemy.rect.bottom = tile[1].top
                     # player.momentum[1] = 0.0
                     enemy.bounce_vertical()
