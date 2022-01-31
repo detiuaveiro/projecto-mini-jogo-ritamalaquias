@@ -8,9 +8,9 @@ class Player(Character):
         self.score = score
         super().__init__('playerSprite1.png', PLAYER_WIDTH, PLAYER_HEIGHT, position, momentum) #from Character class
 
+    #adds momentum according to key pressed
     def player_controls(self):
         keys_pressed = key.get_pressed()
-        
         if keys_pressed[K_LEFT]:
             self.momentum[0] -= 0.1
         if keys_pressed[K_RIGHT]:

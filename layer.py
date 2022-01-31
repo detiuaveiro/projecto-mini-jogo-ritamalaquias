@@ -1,7 +1,5 @@
 from pygame import *
 from pygame.sprite import Sprite
-import os
-import pygame
 from pygame.locals import *
 
 from tile import Tile
@@ -13,6 +11,7 @@ class Layer(Sprite):
         self.tile_list = []
         self.collidable = collidable
 
+        #cycles through all rows and columns from the grid to build the tiles
         row_count = 0
         for row in grid:
             column_count = 0
@@ -26,12 +25,9 @@ class Layer(Sprite):
                     tile_sprite.set_alpha(0)
                     self.tile_list.append((tile_sprite, tile_sprite.get_rect()))
                 else:
-                    #tile_image = image.load(os.path.join('Assets', assets_dict[tile]))
-                    #tile_sprite = transform.scale(tile_image, (TILE_SIZE, TILE_SIZE))
                     tile_sprite = Tile(assets_dict[tile], (column_count * TILE_SIZE, row_count * TILE_SIZE))
                     self.tile_list.append((tile_sprite.image, tile_sprite.rect))
-                
-                
+
                 column_count +=1
             row_count+=1
         

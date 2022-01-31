@@ -32,8 +32,9 @@ class Character(Sprite):
 
     #TO DO: fix bounce
     def bounce_horizontal(self):
-        self.momentum[0] *= -BOUNCE_INTENSITY
-
+        #BOUNCE_INTENSITY needs to be negative value to go to opposite direction from where it was going originally
+        self.momentum[0] *= -BOUNCE_INTENSITY 
+        
     def bounce_vertical(self):
         self.momentum[1] *= -BOUNCE_INTENSITY
 
@@ -42,7 +43,7 @@ class Character(Sprite):
         self.momentum[1] -= 0.03
 
     def add_gravity(self):
-        self.momentum[1] += 0.05 #momentum y, gravity
+        self.momentum[1] += 0.05 #adds down force to simulate gravity
     
     def apply_window_collision(self, height, width):
         #collision window bottom
