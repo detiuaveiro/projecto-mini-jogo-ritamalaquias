@@ -9,7 +9,7 @@ from level import Level
 from layer import Layer
 
 #window
-WIDTH, HEIGHT = 900, 500
+WIDTH, HEIGHT = 640, 480 #4:3
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Balloon Fight") #window name
 
@@ -17,14 +17,13 @@ BLACK = (0, 0, 0) #color for window fill defined here so it can be easier to cha
 FPS = 60 #fps defined here so it can be easier to change if needed
 
 #using dictionaries to correlate grid numbers to the image file names for sprites
-background_img_dict = {2: 'bgSprite1.png', 3: 'bgSprite2.png', 4: 'bgSprite3.png', 5: 'bgSprite4.png', 6: 'bgSprite5.png'}
-platform_img_dict = {2: 'tileSprite1.png'}
+background_img_dict = {2: 'bgSprite1.png', 3: 'bgSprite2.png', 4: 'bgSprite3.png', 5: 'bgSprite4.png', 6: 'bgSprite5.png', 7: 'bgSpriteWater1.png', 8: 'bgSpriteWater2.png'}
+platform_img_dict = {2: 'tileSprite1.png', 3: 'tileSprite2.png'}
 
-#TO DO: read grid from file
 ###TEST
 f = open(os.path.join('levelmaps', 'level1.json'))
 level_test = json.load(f)
-print(level_test["background"])
+#print(level_test["background"])
 
 #background
 grid_background = level_test["background"]
