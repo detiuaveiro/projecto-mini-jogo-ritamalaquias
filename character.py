@@ -6,7 +6,7 @@ BOUNCE_INTENSITY = 1.0
 MAX_MOMENTUM = 2.5
 
 class Character(Sprite):
-    def __init__(self, character_image, width, height, position = [0.0, 0.0], momentum = [0.0, 0.0]):      
+    def __init__(self, character_image, width, height, position, momentum = [0.0, 0.0]):
         self.position = position
         self.momentum = [momentum[0], momentum[1]] #necessary to force momentum to be a instance variable: alternative (self.momentum = momentum) won't work 
         self.character_image = image.load(os.path.join('Assets', character_image)) 

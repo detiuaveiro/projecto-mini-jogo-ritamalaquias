@@ -8,13 +8,7 @@ from enemy import Enemy, EnemyState, EnemyType
 from level import Level
 from layer import Layer
 from consts import Consts
-
-#window
-const = Consts()
-pygame.display.set_caption("Balloon Fight") #window name
-
-BLACK = (0, 0, 0) #color for window fill defined here so it can be easier to change it if needed
-FPS = 60 #fps defined here so it can be easier to change if needed
+from titlescreen import TitleScreen
 
 #using dictionaries to correlate grid numbers to the image file names for sprites
 background_img_dict = {2: 'bgSprite1.png', 3: 'bgSprite2.png', 4: 'bgSprite3.png', 5: 'bgSprite4.png', 6: 'bgSprite5.png', 7: 'bgSpriteWater1.png', 8: 'bgSpriteWater2.png'}
@@ -31,6 +25,8 @@ grid_background = level_test["background"]
 grid_platform = level_test["foreground"]
 
 #classes are instanciated here so that they can be used in other functions besides main()
+const = Consts()
+title_screen = TitleScreen()
 background = Layer(grid_background, background_img_dict) #creates background layer using its sprites dictionary
 platforms = Layer(grid_platform, platform_img_dict, True) #creates foreground layer using its sprites dictionary with collision
 level = Level() #creates the level where the layers and enemies lists are going to reside
@@ -43,7 +39,7 @@ def main():
     level.layer_list.append(platforms)
     level.enemy_list.append(Enemy(EnemyType.easy, [100.0, 200.0])) 
     level.enemy_list.append(Enemy(EnemyType.normal, [500.0, 100.0])) 
-
+    
     #game loop
     run = True
     while run:
@@ -104,7 +100,9 @@ def draw_window():
     const.WIN.blit(player.image, (player.position[0], player.position[1])) 
     for enemy in level.enemy_list:
         const.WIN.blit(enemy.image, (enemy.position[0], enemy.position[1])) #0 = x, 1 = y
-
+    
+    title_screen.draw()
+    pygame.display.set_caption("Balloon Fight") #window name
     pygame.display.update() #refreshes the screen
 
 #def draw title screen I guess
