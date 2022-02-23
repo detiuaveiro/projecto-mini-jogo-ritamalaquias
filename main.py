@@ -7,10 +7,10 @@ from player import Player
 from enemy import Enemy, EnemyState, EnemyType
 from level import Level
 from layer import Layer
+from consts import Consts
 
 #window
-WIDTH, HEIGHT = 640, 480 #4:3
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+const = Consts()
 pygame.display.set_caption("Balloon Fight") #window name
 
 BLACK = (0, 0, 0) #color for window fill defined here so it can be easier to change it if needed
@@ -47,12 +47,13 @@ def main():
     #game loop
     run = True
     while run:
-        clock.tick(FPS) #runs the while loop at the frames defined
+        clock.tick(const.FPS) #runs the while loop at the frames defined
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
         player.add_gravity()
+        player.add_friction()
 
         for tile in level.get_collidable_tiles():
             collide = tile[1].colliderect(player.rect)
@@ -62,7 +63,7 @@ def main():
                 player.bounce_horizontal()
 
         player.player_controls()
-        player.apply_window_collision(HEIGHT, WIDTH)
+        player.apply_window_collision(const.HEIGHT, const.WIDTH)
         player.apply_momentum()       
         update_enemies()
         draw_window()
@@ -75,7 +76,7 @@ def update_enemies():
         enemy.add_gravity()
         #state machine
         if enemy.state == EnemyState.chasing:
-            enemy.apply_window_collision(HEIGHT, WIDTH)
+            enemy.apply_window_collision(const.HEIGHT, const.WIDTH)
             enemy.apply_ai(player)
         enemy.apply_momentum()
         
@@ -93,18 +94,20 @@ def update_enemies():
                 enemy.rect.bottom = tile[1].top
                 enemy.bounce_vertical()
         
-        if enemy.rect.top > HEIGHT: #to remove dead enemy after it drops from screen
+        if enemy.rect.top > const.HEIGHT: #to remove dead enemy after it drops from screen
             level.enemy_list.remove(enemy)
 
 def draw_window():
-    WIN.fill(BLACK)
+    const.WIN.fill(const.BLACK)
     for tile in level.get_all_tiles():
-        WIN.blit(tile[0], tile[1]) #0 = tile_sprite, 1 = rect
-    WIN.blit(player.image, (player.position[0], player.position[1])) 
+        const.WIN.blit(tile[0], tile[1]) #0 = tile_sprite, 1 = rect
+    const.WIN.blit(player.image, (player.position[0], player.position[1])) 
     for enemy in level.enemy_list:
-        WIN.blit(enemy.image, (enemy.position[0], enemy.position[1])) #0 = x, 1 = y
+        const.WIN.blit(enemy.image, (enemy.position[0], enemy.position[1])) #0 = x, 1 = y
 
     pygame.display.update() #refreshes the screen
+
+#def draw title screen I guess
 
 if __name__ == "__main__": #main file to run
     main()

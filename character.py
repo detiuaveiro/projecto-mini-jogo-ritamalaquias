@@ -45,6 +45,9 @@ class Character(Sprite):
     def add_gravity(self):
         self.momentum[1] += 0.05 #adds down force to simulate gravity
     
+    def add_friction(self): #when player collides with platform it keeps jumping with the same force, so in order to avoid this it needs friction
+        self.momentum[1] = self.momentum[1] * 0.98
+
     def apply_window_collision(self, height, width):
         #collision window bottom
         if self.rect.bottom > height and self.momentum[1] > 0.0:
