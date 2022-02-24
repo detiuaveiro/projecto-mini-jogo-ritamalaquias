@@ -10,6 +10,8 @@ class Button(Sprite):
         self.image = image
         self.position = position
         self.rect = self.image.get_rect()
+        self.rect.x = position[0]
+        self.rect.y = position[1]
         self.clicked = False
         
     def on_click(self):

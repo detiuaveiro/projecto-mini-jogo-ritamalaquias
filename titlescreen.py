@@ -4,6 +4,8 @@ from pygame.sprite import Sprite
 import os
 from consts import Consts
 from button import Button
+from enums import MainState
+
 
 const = Consts()
 
