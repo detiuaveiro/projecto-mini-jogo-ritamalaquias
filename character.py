@@ -38,10 +38,6 @@ class Character(Sprite):
     def bounce_vertical(self):
         self.momentum[1] *= -BOUNCE_INTENSITY
 
-    def add_friction(self):
-        self.momentum[0] -= 0.03
-        self.momentum[1] -= 0.03
-
     def add_gravity(self):
         self.momentum[1] += 0.05 #adds down force to simulate gravity
     
