@@ -3,6 +3,7 @@ import os
 import json
 from pygame import *
 from pygame.locals import *
+from command import InputHandler, Command
 from player import Player, PlayerState
 from enemy import Enemy, EnemyState, EnemyType
 from level import Level
@@ -32,10 +33,11 @@ game_ui = GameUI()
 background = Layer(grid_background, background_img_dict) #creates background layer using its sprites dictionary
 platforms = Layer(grid_platform, platform_img_dict, True) #creates foreground layer using its sprites dictionary with collision
 level = Level() #creates the level where the layers and enemies lists are going to reside
-player = Player([100.0, 100.0])
+player = Player.get_instance([100.0, 100.0])
 current_game_state = MainState.menu
 
 #main program
+
 def main():  
     global current_game_state
     clock = pygame.time.Clock()
@@ -95,7 +97,12 @@ def main():
                 player.bounce_vertical()
                 player.bounce_horizontal()
 
-        player.player_controls()
+        #command pattern
+        input_handler = InputHandler() #needs to be inside main loop to get button presses each frame
+        command_list = input_handler.handleInput()
+        for command in command_list:
+            command.execute(player)
+
         player.apply_window_collision(const.HEIGHT, const.WIDTH)
         player.apply_momentum()
         update_enemies()
