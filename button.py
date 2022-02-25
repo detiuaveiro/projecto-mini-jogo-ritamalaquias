@@ -24,7 +24,7 @@ class Button(Sprite):
                 mouse_action = True
                 self.clicked = True
         
-        if pygame.mouse.get_pressed()[0] == 0:
+        if pygame.mouse.get_pressed()[0] == 0: #left click
             self.clicked = False
 
         return mouse_action

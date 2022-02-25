@@ -1,11 +1,9 @@
-from curses import KEY_ENTER
-from signal import pause
 import pygame
 import os
 import json
 from pygame import *
 from pygame.locals import *
-from player import Player
+from player import Player, PlayerState
 from enemy import Enemy, EnemyState, EnemyType
 from level import Level
 from layer import Layer
@@ -19,13 +17,13 @@ platform_img_dict = {2: 'tileSprite1.png', 3: 'tileSprite2.png'}
 
 ###TEST
 f = open(os.path.join('levelmaps', 'level1.json'))
-level_test = json.load(f)
+level = json.load(f)
 #print(level_test["background"])
 
 #background
-grid_background = level_test["background"]
+grid_background = level["background"]
 #foreground
-grid_platform = level_test["foreground"]
+grid_platform = level["foreground"]
 
 #classes are instanciated here so that they can be used in other functions besides main()
 const = Consts()
@@ -43,16 +41,15 @@ def main():
     clock = pygame.time.Clock()
     level.layer_list.append(background)
     level.layer_list.append(platforms)
-    level.enemy_list.append(Enemy(EnemyType.easy, [100.0, 200.0])) 
+    level.enemy_list.append(Enemy(EnemyType.easy, [500.0, 400.0])) 
     level.enemy_list.append(Enemy(EnemyType.normal, [500.0, 100.0])) 
-    
-    
+        
     #game loop
     run = True
     while run:
         clock.tick(const.FPS) #runs the while loop at the frames defined
-       
 
+        #pause menu appears
         key_pressed = key.get_pressed()
         if key_pressed[K_p]: 
             if current_game_state == MainState.pause:
@@ -60,41 +57,47 @@ def main():
             else:
                 current_game_state = MainState.pause
 
+        #counts amount of enemies remaining
         remaining_enemies = 0
         for enemy in level.enemy_list:
             if enemy.state != EnemyState.defeated:
                 remaining_enemies += 1
 
-        if remaining_enemies == 0:
+        #checks if game over screen should appear
+        if remaining_enemies == 0 or player.state == PlayerState.dead:
             current_game_state = MainState.game_over
-
+        #checks click on start button in title screen, which starts the game
         if title_screen.start_button.on_click():
             current_game_state = MainState.running
+        #checks click on exit button in title screen
         if title_screen.exit_button.on_click():
             current_game_state = MainState.exit
+        #checks click on quit button in game over screen
         if game_ui.quit_button.on_click():
             current_game_state = MainState.exit
-        
+        #when user clicks on the X button 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False 
-
+        #checks if game is in exit state - if so, the game closes
         if current_game_state == MainState.exit:
             run = False
 
         player.add_gravity()
         player.add_friction()
 
+        #checks if player is colliding with platforms 
         for tile in level.get_collidable_tiles():
+            #the rect coordinates are on the tile's second value. tile is a surface which contains an image as its first value, then rect as its second value. rect is [1]
             collide = tile[1].colliderect(player.rect)
             if collide:
-                player.rect.bottom = tile[1].top
+                player.rect.bottom = tile[1].top #positions player on top of the platform, which makes sure the player cannot go through it
                 player.bounce_vertical()
                 player.bounce_horizontal()
 
         player.player_controls()
         player.apply_window_collision(const.HEIGHT, const.WIDTH)
-        player.apply_momentum()       
+        player.apply_momentum()
         update_enemies()
         draw_window()
 
@@ -111,10 +114,13 @@ def update_enemies():
                 enemy.apply_ai(player)
             enemy.apply_momentum()
             
+            #enemies collide with player
             if player.rect.colliderect(enemy.rect) and enemy.state == EnemyState.chasing:
-                if player.rect.bottom < enemy.rect.top+2:
+                if player.rect.bottom <= enemy.rect.top+2:
                     enemy.state = EnemyState.dying
                     player.score += Enemy.enemy_type_score_value[enemy.enemy_type]
+                if enemy.rect.bottom <= player.rect.top+2:
+                    player.state = PlayerState.dead
                 enemy.bounce_horizontal()
                 enemy.bounce_vertical()
                 player.bounce_horizontal()

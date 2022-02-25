@@ -33,7 +33,7 @@ class Character(Sprite):
     #TO DO: fix bounce
     def bounce_horizontal(self):
         #BOUNCE_INTENSITY needs to be negative value to go to opposite direction from where it was going originally
-        self.momentum[0] *= -BOUNCE_INTENSITY 
+        self.momentum[0] *= -BOUNCE_INTENSITY
         
     def bounce_vertical(self):
         self.momentum[1] *= -BOUNCE_INTENSITY

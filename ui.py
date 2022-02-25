@@ -1,4 +1,3 @@
-from signal import pause
 from pygame import *
 from pygame.sprite import Sprite
 import os

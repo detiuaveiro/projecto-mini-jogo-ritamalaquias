@@ -17,3 +17,7 @@ class MainState(Enum):
     victory = 4
     pause = 5
     exit = 6
+
+class PlayerState(Enum):
+    normal = 1
+    dead = 2
